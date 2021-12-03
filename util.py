@@ -38,13 +38,13 @@ def Download(filepattern, urlpattern, day):
 
 def ReadData(day: int) -> List[str]:
     return Download(
-        "./data/puzzle_{:02}.txt", "https://adventofcode.com/2020/day/{}/input", day
+        "./data/puzzle_{:02}.txt", "https://adventofcode.com/2021/day/{}/input", day
     )
 
 
 def ReadInstructions(day: int):
     Download(
-        "./data/instructions_{:02}.html", "https://adventofcode.com/2020/day/{}", day
+        "./data/instructions_{:02}.html", "https://adventofcode.com/2021/day/{}", day
     )
 
 
