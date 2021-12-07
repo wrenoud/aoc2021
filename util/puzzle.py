@@ -3,6 +3,7 @@ import sys
 import json
 from typing import List
 import requests
+import re
 
 
 def get_session():
@@ -28,42 +29,35 @@ def Download(filepattern, urlpattern, day):
         puzzle = res.text.strip()
         with open(filepath, "w", encoding="utf-8") as f:
             f.write(puzzle)
-        return puzzle.split("\n")
+        return puzzle
     else:
         print(url)
 
     with open(filepath, encoding="utf-8") as f:
-        return f.read().split("\n")
+        return f.read()
 
 
-def ReadData(day: int) -> List[str]:
+def GetDay():
+    return int(sys.argv[0].split("_")[-1].split(".")[0])
+
+
+def ReadPuzzle() -> List[str]:
     return Download(
-        "./data/puzzle_{:02}.txt", "https://adventofcode.com/2021/day/{}/input", day
+        "./data/puzzle_{:02}.txt", "https://adventofcode.com/2021/day/{}/input", GetDay()
+    ).split("\n")
+
+
+def ReadExamplePuzzle():
+    instructions = Download(
+        "./data/instructions_{:02}.html", "https://adventofcode.com/2021/day/{}", GetDay()
     )
+    datamatch = re.search("For example.*?:[\s\S]+?\<code\>([\s\S]+?)\n?\<\/code\>", instructions, re.MULTILINE)
+    answermatch = re.search("\<code\>\<em\>(.*?)\<\/em\>\<\/code\>", instructions)
 
-
-def ReadInstructions(day: int):
-    Download(
-        "./data/instructions_{:02}.html", "https://adventofcode.com/2021/day/{}", day
-    )
-
-
-def ReadPuzzle():
-    day = int(sys.argv[0].split("_")[-1].split(".")[0])
-    ReadInstructions(day)
-    return ReadData(day)
+    return datamatch.group(1).split("\n"), int(answermatch.group(1))
 
 
 def Answer(part, answer):
     print("-" * 80)
     print("Part {} answer:".format(part), answer)
     print("-" * 80)
-
-
-class AdventOfCodeDay:
-    pass
-
-
-if __name__ == "__main__":
-
-    print(ReadData(1))

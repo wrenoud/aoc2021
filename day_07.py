@@ -18,8 +18,7 @@ def part1(data):
         c = cost_linear(data, i)
         if best[1] is None or c < best[1]:
             best = [i, c]
-
-    util.Answer(1, best)
+    return best[1]
 
 
 def part2(data):
@@ -30,12 +29,23 @@ def part2(data):
         c = cost_binomial(data, i)
         if best[1] is None or c < best[1]:
             best = [i, c]
-    util.Answer(2, best)
+    return best[1]
+
+
+def preprocess_data(data):
+    """Do any additional parsing to the data to prep for answers"""
+    return list(int(v) for v in data[0].split(","))
 
 
 if __name__ == "__main__":
-    data = util.ReadPuzzle()
-    data = list(int(v) for v in data[0].split(","))
+    test_data, test_answer1 = util.ReadExamplePuzzle()
+    test_data = preprocess_data(test_data)
 
-    part1(data)
-    part2(data)
+    assert part1(test_data) == test_answer1
+    assert part2(test_data) == 168
+
+    data = util.ReadPuzzle()
+    data = preprocess_data(data)
+
+    util.Answer(1, part1(data))
+    util.Answer(1, part2(data))

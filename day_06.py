@@ -36,12 +36,23 @@ def part2(data):
     return sum(pop_data[:257]) + len(data)
 
 
-if __name__ == "__main__":
-    assert part1([3, 4, 3, 1, 2]) == 5934
-    assert part2([3, 4, 3, 1, 2]) == 26984457539
+def preprocess_data(data):
+    """Do any additional parsing to the data to prep for answers"""
+    return list(int(v) for v in data[0].split(","))
 
-    data = util.ReadPuzzle()[0]
-    data = list(int(v) for v in data.split(","))
+
+if __name__ == "__main__":
+    test_data, test_answer1 = util.ReadExamplePuzzle()
+    test_data = preprocess_data(test_data)
+
+    assert part1(test_data) == test_answer1
+    assert part2(test_data) == 26984457539
+
+    data = util.ReadPuzzle()
+    data = preprocess_data(data)
+
+    data = util.ReadPuzzle()
+    data = preprocess_data(data)
 
     util.Answer(1, part1(data))
     util.Answer(2, part2(data))
